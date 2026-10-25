@@ -4,9 +4,17 @@ internal class Program
 {
     private static void Main(string[] args)
     {
-        Console.OutputEncoding = System.Text.Encoding.UTF8;
+        // Настраиваем кодировку для корректного ввода и вывода русских букв
+        try
+        {
+            Console.InputEncoding = System.Text.Encoding.UTF8;
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
+        }
+        catch
+        {
+            // Если среда не поддерживает UTF-8, оставляем стандартную кодировку
+        }
 
-        // Вызываем каждое задание отдельно
         Task1_3_Names();
         Task2_2_HumanWithName();
         Task2_3_HumanWithParent();
@@ -15,60 +23,79 @@ internal class Program
         Task4_6_CreateHuman();
         Task5_2_Cat();
 
-        Console.WriteLine("\n=== ВСЕ ЗАДАНИЯ ВЫПОЛНЕНЫ ===");
         Console.ReadKey();
     }
 
-    // ЗАДАНИЕ 1.3: Имена
     private static void Task1_3_Names()
     {
         Console.WriteLine("--- ЗАДАНИЕ 1.3. Имена ---");
-        Name name1 = new Name("Клеопатра");
-        Name name2 = new Name("Александр", "Пушкин", "Сергеевич");
-        Name name3 = new Name("Владимир", "Маяковский");
 
-        Console.WriteLine(name1);
-        Console.WriteLine(name2);
-        Console.WriteLine(name3);
+        string name1 = Validator.ReadString("Введите имя (например, Клеопатра): ");
+        Name n1 = new Name(name1);
+
+        string f2 = Validator.ReadString("Введите имя (Александр): ");
+        string s2 = Validator.ReadString("Введите фамилию (Пушкин): ");
+        string p2 = Validator.ReadString("Введите отчество (Сергеевич): ");
+        Name n2 = new Name(f2, s2, p2);
+
+        string f3 = Validator.ReadString("Введите имя (Владимир): ");
+        string s3 = Validator.ReadString("Введите фамилию (Маяковский): ");
+        Name n3 = new Name(f3, s3);
+
+        Console.WriteLine("Результат:");
+        Console.WriteLine(n1);
+        Console.WriteLine(n2);
+        Console.WriteLine(n3);
         Console.WriteLine();
     }
 
-    // ЗАДАНИЕ 2.2: Человек с именем
     private static void Task2_2_HumanWithName()
     {
         Console.WriteLine("--- ЗАДАНИЕ 2.2. Человек с именем ---");
-        Name name1 = new Name("Клеопатра");
-        Name name2 = new Name("Александр", "Пушкин", "Сергеевич");
-        Name name3 = new Name("Владимир", "Маяковский");
 
-        Human h1 = new Human(name1, 152);
-        Human h2 = new Human(name2, 167);
-        Human h3 = new Human(name3, 189);
+        string f = Validator.ReadString("Введите имя человека: ");
+        string s = Validator.ReadString("Введите фамилию: ");
+        string p = Validator.ReadString("Введите отчество: ");
+        int h = Validator.ReadInt("Введите рост: ");
 
-        Console.WriteLine(h1);
-        Console.WriteLine(h2);
-        Console.WriteLine(h3);
+        Name name = new Name(f, s, p);
+        Human human = new Human(name, h);
+
+        Console.WriteLine("Результат: " + human);
         Console.WriteLine();
     }
 
-    // ЗАДАНИЕ 2.3: Человек с родителем
     private static void Task2_3_HumanWithParent()
     {
         Console.WriteLine("--- ЗАДАНИЕ 2.3. Человек с родителем ---");
-        Human ivan = new Human(new Name("Иван", "Чудов"), 180);
-        Human petr = new Human(new Name("Петр"), 175, ivan);
-        Human boris = new Human(new Name("Борис"), 170, petr);
 
+        Console.WriteLine("Создаем отца:");
+        string f1 = Validator.ReadString("Введите имя отца: ");
+        string s1 = Validator.ReadString("Введите фамилию отца: ");
+        int h1 = Validator.ReadInt("Введите рост отца: ");
+        Human ivan = new Human(new Name(f1, s1), h1);
+
+        Console.WriteLine("Создаем сына (отчество и фамилия возьмутся от отца):");
+        string f2 = Validator.ReadString("Введите имя сына: ");
+        int h2 = Validator.ReadInt("Введите рост сына: ");
+        Human petr = new Human(new Name(f2), h2, ivan);
+
+        Console.WriteLine("Создаем внука (отчество и фамилия возьмутся от отца):");
+        string f3 = Validator.ReadString("Введите имя внука: ");
+        int h3 = Validator.ReadInt("Введите рост внука: ");
+        Human boris = new Human(new Name(f3), h3, petr);
+
+        Console.WriteLine("Результат:");
         Console.WriteLine(ivan);
         Console.WriteLine(petr);
         Console.WriteLine(boris);
         Console.WriteLine();
     }
 
-    // ЗАДАНИЕ 3.3: Города
     private static void Task3_3_Cities()
     {
         Console.WriteLine("--- ЗАДАНИЕ 3.3. Города ---");
+
         City a = new City("A");
         City b = new City("B");
         City c = new City("C");
@@ -83,6 +110,7 @@ internal class Program
         e.Paths = new Path[] { new Path(d, 2) };
         f.Paths = new Path[] { new Path(b, 1), new Path(e, 2) };
 
+        Console.WriteLine("Результат (схема с рисунка):");
         Console.WriteLine(a);
         Console.WriteLine(b);
         Console.WriteLine(c);
@@ -92,50 +120,102 @@ internal class Program
         Console.WriteLine();
     }
 
-    // ЗАДАНИЕ 4.5: Создаем Имена (демонстрация конструкторов)
     private static void Task4_5_CreateNames()
     {
         Console.WriteLine("--- ЗАДАНИЕ 4.5. Создаем Имена ---");
-        Name n1 = new Name("Клеопатра");
-        Name n2 = new Name("Александр", "Пушкин", "Сергеевич");
-        Name n3 = new Name("Владимир", "Маяковский");
-        // Христофор это имя, а Бонифатьевич - фамилия (по условию задачи)
-        Name n4 = new Name("Христофор", "Бонифатьевич");
 
-        Console.WriteLine(n1);
-        Console.WriteLine(n2);
-        Console.WriteLine(n3);
-        Console.WriteLine(n4);
+        string n1 = Validator.ReadString("Введите имя: ");
+        Name name1 = new Name(n1);
+
+        string f2 = Validator.ReadString("Введите имя: ");
+        string s2 = Validator.ReadString("Введите фамилию: ");
+        string p2 = Validator.ReadString("Введите отчество: ");
+        Name name2 = new Name(f2, s2, p2);
+
+        string f3 = Validator.ReadString("Введите имя: ");
+        string s3 = Validator.ReadString("Введите фамилию: ");
+        Name name3 = new Name(f3, s3);
+
+        string f4 = Validator.ReadString("Введите имя (Христофор): ");
+        string s4 = Validator.ReadString("Введите фамилию (Бонифатьевич): ");
+        Name name4 = new Name(f4, s4);
+
+        Console.WriteLine("Результат:");
+        Console.WriteLine(name1);
+        Console.WriteLine(name2);
+        Console.WriteLine(name3);
+        Console.WriteLine(name4);
         Console.WriteLine();
     }
 
-    // ЗАДАНИЕ 4.6: Создаем Человека (демонстрация конструкторов и отца)
     private static void Task4_6_CreateHuman()
     {
         Console.WriteLine("--- ЗАДАНИЕ 4.6. Создаем Человека ---");
-        Human lev = new Human("Лев", 170);
-        Human sergey = new Human(new Name("Сергей", "Пушкин"), 168, lev);
-        Human alexander = new Human("Александр", 167, sergey);
 
+        Console.WriteLine("Создаем Льва (строка + рост):");
+        string n1 = Validator.ReadString("Введите имя: ");
+        int h1 = Validator.ReadInt("Введите рост: ");
+        Human lev = new Human(n1, h1);
+
+        Console.WriteLine("Создаем Сергея (Имя + рост + отец):");
+        string f2 = Validator.ReadString("Введите имя: ");
+        string s2 = Validator.ReadString("Введите фамилию: ");
+        int h2 = Validator.ReadInt("Введите рост: ");
+        Human sergey = new Human(new Name(f2, s2), h2, lev);
+
+        Console.WriteLine("Создаем Александра (строка + рост + отец):");
+        string n3 = Validator.ReadString("Введите имя: ");
+        int h3 = Validator.ReadInt("Введите рост: ");
+        Human alexander = new Human(n3, h3, sergey);
+
+        Console.WriteLine("Результат:");
         Console.WriteLine(lev);
         Console.WriteLine(sergey);
         Console.WriteLine(alexander);
         Console.WriteLine();
     }
 
-    // ЗАДАНИЕ 5.2: Кот мяукает
     private static void Task5_2_Cat()
     {
         Console.WriteLine("--- ЗАДАНИЕ 5.2. Кот мяукает ---");
-        Cat cat = new Cat("Барсик");
-        Console.WriteLine(cat);
+
+        string name = Validator.ReadString("Введите имя кота: ");
+        Cat cat = new Cat(name);
+
+        Console.WriteLine("Результат: " + cat);
         cat.Meow();
-        cat.Meow(3);
+
+        int n = Validator.ReadInt("Сколько раз мяукнуть? ");
+        cat.Meow(n);
         Console.WriteLine();
     }
 }
 
-// ================= КЛАССЫ =================
+internal static class Validator
+{
+    public static string ReadString(string prompt)
+    {
+        while (true)
+        {
+            Console.Write(prompt);
+            string s = Console.ReadLine();
+            if (!string.IsNullOrWhiteSpace(s)) return s.Trim();
+            Console.WriteLine("Ошибка! Строка не может быть пустой.");
+        }
+    }
+
+    public static int ReadInt(string prompt)
+    {
+        int x;
+        while (true)
+        {
+            Console.Write(prompt);
+            string s = Console.ReadLine();
+            if (int.TryParse(s, out x)) return x;
+            Console.WriteLine("Ошибка! Введите целое число.");
+        }
+    }
+}
 
 internal class Name
 {
@@ -176,7 +256,6 @@ internal class Human
     public int Height { get { return _height; } set { _height = value; } }
     public Human Father { get { return _father; } set { _father = value; } }
 
-    // Главный конструктор, где выполняются все присвоения и логика родителя (Задание 2.3 и 4.6)
     public Human(Name name, int height, Human father)
     {
         string surname = name.Surname;
@@ -196,7 +275,6 @@ internal class Human
         _father = father;
     }
 
-    // Остальные конструкторы вызывают главный через this() (как требует Задание 4.6)
     public Human(string name, int height) : this(new Name(name), height, null) { }
     public Human(string name, int height, Human father) : this(new Name(name), height, father) { }
     public Human(Name name, int height) : this(name, height, null) { }
