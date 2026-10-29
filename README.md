@@ -57,7 +57,8 @@
 4. В методе `ToString()` класса `City` циклом перебираются все пути и формируется строка с названиями и ценами.
 
 ### Тестирование
-<img width="1078" height="232" alt="image" src="https://github.com/user-attachments/assets/f91559d6-aabe-414d-a718-c7c7070d4e55" />
+<img width="592" height="236" alt="image" src="https://github.com/user-attachments/assets/5a675c3b-d5c8-428f-bd4b-114ac6c386e7" />
+
 
 
 # Задание 4. Задача 5. Создаем Имена
